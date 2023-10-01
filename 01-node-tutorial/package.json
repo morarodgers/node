@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "prompt-sync": "^4.2.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
