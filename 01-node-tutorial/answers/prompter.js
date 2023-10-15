@@ -60,6 +60,7 @@ const server = http.createServer((req, res) => {
   if (req.method === "POST") {
     getBody(req, (body) => {
       console.log("The body of the post is ", body);
+      console.log("Hey there");
       // here, you can add your own logic
       if (body["item"]) {
         item = body["item"];
@@ -80,5 +81,8 @@ const server = http.createServer((req, res) => {
   }
 });
 
+server.on('request', (req) => {
+  console.log("event received: ", req.method, req.url)
+})
 server.listen(3000);
 console.log("The server is listening on port 3000.");
