@@ -1,25 +1,59 @@
 const express = require('express');
 const path = require('path')
 const {products} = require('./data')
-
 const app = express()
+//let {people} = require('./data')
+
+const people = require('./routes/people')
+
+const logger = (req, res, next) => {
+    const method = req.method
+    const url = req.url
+    const time = new Date().getFullYear()
+    console.log(method, url, time)
+    next()
+}
 
 // Setting up static middleware
+//app.use(express.static('./methods-public'))
 app.use(express.static('./public-folder'))
 
+// Parse the form data
+app.use(express.urlencoded({extended: false}));
+
+// Parse json
+app.use(express.json());
+
+app.use("/api/v1/people", people);
+
+//app.get('/api/v1/people', (req, res) => {
+//    res.status(200).json({ success: true, data: people})
+//    console.log('It worked!')
+//})
+
+//app.post('/api/v1/people', (req, res) => {
+//    //console.log(req.body)
+//    const {name} = req.body
+//    if (name) {
+//        people.push({ id: people.length, neame: req.body.name });
+//        res.status(201).json({ success: true, name: req.body.name });
+//    }
+//    res.status(400).json({success: false, message: 'Please provide a name'});
+//})
+
 // Return a JSON formatted output
-app.get('/api/v1/test', (req, res) => {
+app.get('/api/v1/test', logger, (req, res) => {
     console.log('User tapped the resource')
     res.json({message: 'It wordked!'})
 })
 
-// Retrun an array of data
-app.get('/api/v1/products', (req, res) => {
+// Return an array of data
+app.get('/api/v1/products', logger, (req, res) => {
     res.json(products)
 })
 
 // Return a particular product by ID
-app.get('/api/v1/products/:productID', (req, res) => {
+app.get('/api/v1/products/:productID', logger, (req, res) => {
     const idToFind = parseInt(req.params.productID)
     const product = products.find ((p) => p.id === idToFind)
     
@@ -30,7 +64,7 @@ app.get('/api/v1/products/:productID', (req, res) => {
 })
 
 // Simple search by user 
-app.get('/api/v1/query', (req, res) => {
+app.get('/api/v1/query', logger, (req, res) => {
 
     const {search, limit, regExpression, minPrice, maxPrice} = req.query
     let sortedProds = [...products]
