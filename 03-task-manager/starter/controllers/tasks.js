@@ -1,7 +1,9 @@
 const Task = require('../models/Task')
-const getAllTasks = (req, res) => {
-    res.send('All items')
-}
+
+const getAllTasks = async (req, res) => {
+    const tasks = await Task.find({})
+    res.status(200).json({tasks})
+  }
 
 const createTask = async (req, res) => {
     const task = await Task.create(req.body)
@@ -9,18 +11,35 @@ const createTask = async (req, res) => {
     res.status(201).json({task})
 }
 
-const getTask = (req, res) => {
-    //res.send('Get single task')
-    res.json({id:req.params.id})
-}
+const getTask = async (req, res, next) => {
+    const { id: taskID } = req.params
+    const task = await Task.findOne({ _id: taskID })
+    if (!task) {
+      return next(createCustomError(`The task with id : ${taskID}, does not exist`, 404))
+    }
+    res.status(200).json({task})
+  }
 
-const updateTask = (req, res) => {
-    res.send('Update task')
-}
+const updateTask = async (req, res, next) => {
+    const {id:taskID} = req.params
+    const task = await Task.findOneAndUpdate({_id:taskID}, req.body, {
+      new: true,
+      runValidators: true,
+    })
+    if (!task) {
+      return next(createCustomError(`The task with id : ${taskID}, does not exist`, 404))
+    }
+    res.status(200).json({task})
+  }
 
-const deleteTask = (req, res) => {
-    res.send('Delete task')
-}
+const deleteTask = async (req, res, next) => {
+    const {id:taskID} = req.params
+    const task = await Task.findOneAndDelete({_id:taskID})
+    if (!task) {
+      return next(createCustomError(`The task with id : ${taskID}, does not exist`, 404))
+    }
+    res.status(200).json({task})
+  }
 
 
 module.exports = {
