@@ -39,28 +39,9 @@ const deleteTask = asyncWrapper( async (req, res, next) => {
   if (!task) {
     return next(createCustomError(`The task with id: ${taskID}, does not exist!`, 404))
   }
-  //res.status(200).json({task})
-  //res.status(200).send()
   res.status(200).json({task: null, status: 'Success'})
 })
 
-/*const editTask = async (req, res, next) => {
-  try {
-    const {id:taskID} = req.params
-    const task = await Task.findOneAndUpdate({_id:taskID}, req.body, {
-      new: true,
-      runValidators: true,
-      overwrite: true,
-    })
-    if (!task) {
-      return res.status(404).json({success: false, message:`The task with id: ${taskID}, does not exist!`})
-    }
-    res.status(200).json({task})
-  } catch (error) {
-    res.status(500).json({msg:error})
-  }
-}
-*/
 module.exports = {
   getAllTasks,
   createTask,
