@@ -47,6 +47,5 @@ module.exports = {
   createTask,
   getTask,
   updateTask,
-  deleteTask,
-  //editTask
+  deleteTask
 }
