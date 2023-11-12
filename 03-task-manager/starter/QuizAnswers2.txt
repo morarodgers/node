@@ -1,11 +1,14 @@
 In this lesson, you created a middleware function called asyncWrapper. Why?
+To avoid repeating the code for async functions in the controllers' tasks.js
 
-Suppose that you want to make sure that both a status code and an error message are sent back to the user when they request the URL for a task that does not exist. Assume that you’ve created a CustomAPIError class and an error handler that references that class. Complete the code:
+Suppose that you want to make sure that both a status code and an error message are sent back to the user when they request the URL for a task that does not exist.
+Assume that you’ve created a CustomAPIError class and an error handler that references that class. Complete the code:
 const getTask = asyncWrapper(async (req, res, next) => {
   const { id: taskID } = req.params;
   const task = await Task.findOne({ _id: taskID });
   if (!task) {
     // your code here
+    return next(createCustomError(`The task with id: ${taskID}, does not exist!`, 404))
   }
   res.status(200).json({ task });
 });
