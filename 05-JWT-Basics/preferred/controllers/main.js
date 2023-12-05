@@ -8,7 +8,7 @@ const logon = async (req, res) => {
         res.status(401).json({message: 'Provide Email and Password'})
     }
 
-    const token = jwt.sign({username}, process.env.jwt_secret, {expiresIn: '90d'})
+    const token = jwt.sign({username}, process.env.JWT_SECRET, {expiresIn: '90d'})
 
     console.log(username, password);
     res.status(200).json({token})

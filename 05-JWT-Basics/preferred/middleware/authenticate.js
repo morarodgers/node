@@ -10,7 +10,7 @@ const authenticationMiddleware = async (req, res, next) => {
     //console.log(token);
 
     try {
-      const name_of_user = jwt.verify(token, process.env.jwt_secret)
+      const name_of_user = jwt.verify(token, process.env.JWT_SECRET)
       const {username} = name_of_user
       req.user = {username}
       next()
